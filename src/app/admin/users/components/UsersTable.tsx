@@ -251,21 +251,105 @@ export const UsersTable = memo(function UsersTable({
             ))}
           </div>
         ) : users.length ? (
-          <div
-            role="grid"
-            aria-label="User directory table"
-            aria-rowcount={users.length}
-          >
-            <VirtualScroller
-              items={users}
-              itemHeight={96}
-              maxHeight="60vh"
-              renderItem={(user) => renderUserRow(user)}
-              overscan={5}
-              getKey={(user) => user.id}
-              className="pr-1"
-            />
-          </div>
+          isMobile && viewMode === 'card' ? (
+            <div className="space-y-3" role="grid" aria-label="User directory cards">
+              {users.map((user) => (
+                <div
+                  key={user.id}
+                  className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-white"
+                  role="gridcell"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      onViewProfile(user)
+                    }
+                  }}
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold shrink-0"
+                        aria-hidden="true"
+                      >
+                        {(user.name || user.email).charAt(0).toUpperCase()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <button
+                          onClick={() => onViewProfile(user)}
+                          className="font-medium text-gray-900 hover:text-blue-600 truncate block text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                          aria-label={`View profile for ${user.name || user.email}`}
+                        >
+                          {user.name || 'Unnamed User'}
+                        </button>
+                        <div className="text-sm text-gray-600 truncate">
+                          {user.email}
+                        </div>
+                      </div>
+                      <UserActions
+                        user={user}
+                        onViewProfile={onViewProfile}
+                        isLoading={isUpdating}
+                      />
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 items-start">
+                      <div
+                        className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(user.status)}`}
+                        role="status"
+                        aria-label={`Status: ${user.status || 'ACTIVE'}`}
+                      >
+                        {user.status || 'ACTIVE'}
+                      </div>
+                      <div
+                        className={`px-2 py-1 rounded text-xs font-medium ${getRoleColor(user.role)}`}
+                        role="status"
+                        aria-label={`Role: ${user.role}`}
+                      >
+                        {user.role}
+                      </div>
+                    </div>
+
+                    <div className="text-xs text-gray-500 space-y-1">
+                      {user.company && <div>Company: {user.company}</div>}
+                      <div>Joined {formatDate(user.createdAt)}</div>
+                    </div>
+
+                    {perms.canManageUsers && (
+                      <Select value={user.role} onValueChange={(val) => handleRoleChange(user.id, val as UserItem['role'])}>
+                        <SelectTrigger className="w-full h-8 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="CLIENT">Client</SelectItem>
+                          <SelectItem value="TEAM_MEMBER">Team Member</SelectItem>
+                          <SelectItem value="TEAM_LEAD">Team Lead</SelectItem>
+                          <SelectItem value="STAFF">Staff</SelectItem>
+                          <SelectItem value="ADMIN">Admin</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div
+              role="grid"
+              aria-label="User directory table"
+              aria-rowcount={users.length}
+            >
+              <VirtualScroller
+                items={users}
+                itemHeight={96}
+                maxHeight="60vh"
+                renderItem={(user) => renderUserRow(user)}
+                overscan={5}
+                getKey={(user) => user.id}
+                className="pr-1"
+              />
+            </div>
+          )
         ) : (
           <div className="h-[60vh] flex items-center justify-center text-gray-500 text-sm" role="status">
             No users found matching your criteria.
