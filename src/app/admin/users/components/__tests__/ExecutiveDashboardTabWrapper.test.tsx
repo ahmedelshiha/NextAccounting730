@@ -1,20 +1,21 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import { describe, it, vi, expect } from 'vitest'
 import { useAdminWorkBenchFeature } from '@/hooks/useAdminWorkBenchFeature'
 import ExecutiveDashboardTabWrapper from '../ExecutiveDashboardTabWrapper'
 
 // Mock the feature flag hook
-jest.mock('@/hooks/useAdminWorkBenchFeature')
-jest.mock('../workbench/AdminWorkBench', () => ({
+vi.mock('@/hooks/useAdminWorkBenchFeature')
+vi.mock('../workbench/AdminWorkBench', () => ({
   default: () => <div data-testid="admin-workbench">AdminWorkBench UI</div>
 }))
-jest.mock('../tabs/ExecutiveDashboardTab', () => ({
+vi.mock('../tabs/ExecutiveDashboardTab', () => ({
   ExecutiveDashboardTab: () => <div data-testid="legacy-dashboard">Legacy Dashboard</div>
 }))
 
 describe('ExecutiveDashboardTabWrapper', () => {
   it('renders AdminWorkBench when feature flag is enabled', () => {
-    ;(useAdminWorkBenchFeature as jest.Mock).mockReturnValue({
+    ;(useAdminWorkBenchFeature as any).mockReturnValue({
       enabled: true,
       globalEnabled: true,
       userEnabled: true,
@@ -22,13 +23,13 @@ describe('ExecutiveDashboardTabWrapper', () => {
     })
 
     render(<ExecutiveDashboardTabWrapper />)
-    
+
     expect(screen.getByTestId('admin-workbench')).toBeInTheDocument()
     expect(screen.queryByTestId('legacy-dashboard')).not.toBeInTheDocument()
   })
 
   it('renders legacy dashboard when feature flag is disabled', () => {
-    ;(useAdminWorkBenchFeature as jest.Mock).mockReturnValue({
+    ;(useAdminWorkBenchFeature as any).mockReturnValue({
       enabled: false,
       globalEnabled: false,
       userEnabled: false,
@@ -36,13 +37,13 @@ describe('ExecutiveDashboardTabWrapper', () => {
     })
 
     render(<ExecutiveDashboardTabWrapper />)
-    
+
     expect(screen.getByTestId('legacy-dashboard')).toBeInTheDocument()
     expect(screen.queryByTestId('admin-workbench')).not.toBeInTheDocument()
   })
 
   it('renders legacy dashboard when global flag is disabled', () => {
-    ;(useAdminWorkBenchFeature as jest.Mock).mockReturnValue({
+    ;(useAdminWorkBenchFeature as any).mockReturnValue({
       enabled: false,
       globalEnabled: false,
       userEnabled: true,
@@ -50,12 +51,12 @@ describe('ExecutiveDashboardTabWrapper', () => {
     })
 
     render(<ExecutiveDashboardTabWrapper />)
-    
+
     expect(screen.getByTestId('legacy-dashboard')).toBeInTheDocument()
   })
 
   it('renders legacy dashboard when user is not in rollout', () => {
-    ;(useAdminWorkBenchFeature as jest.Mock).mockReturnValue({
+    ;(useAdminWorkBenchFeature as any).mockReturnValue({
       enabled: false,
       globalEnabled: true,
       userEnabled: false,
@@ -63,7 +64,7 @@ describe('ExecutiveDashboardTabWrapper', () => {
     })
 
     render(<ExecutiveDashboardTabWrapper />)
-    
+
     expect(screen.getByTestId('legacy-dashboard')).toBeInTheDocument()
   })
 })
