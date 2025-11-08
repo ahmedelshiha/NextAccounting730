@@ -191,16 +191,21 @@ export default function BookingsList() {
 
   const assignSelected = async () => {
     if (!selectedIds.length) return
-    const teamMemberId = window.prompt('Enter team member ID to assign to:')
-    if (!teamMemberId) return
+    setAssigneeId(null)
+    setIsAssignModalOpen(true)
+  }
+
+  const applyAssignSelected = async () => {
+    if (!selectedIds.length || !assigneeId) return
     for (const id of selectedIds) {
       await fetch(`/api/admin/service-requests/${id}/assign`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ teamMemberId }),
+        body: JSON.stringify({ teamMemberId: assigneeId }),
       }).catch(() => {})
     }
     setSelectedIds([])
+    setIsAssignModalOpen(false)
     await refresh()
   }
 
