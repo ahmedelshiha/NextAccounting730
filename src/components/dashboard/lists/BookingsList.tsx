@@ -2,12 +2,15 @@
 
 'use client'
 
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useBookings, type BookingsQuery } from '@/hooks/useBookings'
 import FilterBar from '@/components/dashboard/FilterBar'
 import AdvancedDataTable from '@/components/dashboard/tables/AdvancedDataTable'
 import type { Column, FilterConfig, RowAction } from '@/types/dashboard'
 import Link from 'next/link'
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 interface SRItem {
   id: string
