@@ -241,8 +241,9 @@ export const UserForm = React.forwardRef<HTMLFormElement, UserFormProps>(
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="USER">User</SelectItem>
+                  <SelectItem value="CLIENT">Client</SelectItem>
                   <SelectItem value="TEAM_MEMBER">Team Member</SelectItem>
+                  <SelectItem value="STAFF">Staff</SelectItem>
                   <SelectItem value="TEAM_LEAD">Team Lead</SelectItem>
                   <SelectItem value="ADMIN">Administrator</SelectItem>
                 </SelectContent>
