@@ -282,6 +282,16 @@ export function UserDirectoryFilterBarEnhanced({
         />
       )}
 
+      {/* Quick Filter Buttons */}
+      {showQuickFilters && (
+        <QuickFilterButtons
+          quickFilters={quickFilters}
+          onApplyFilter={handleApplyQuickFilter}
+          currentFilters={filters}
+          users={allUsers}
+        />
+      )}
+
       {/* Results Counter Row */}
       <div className="px-3 py-2 text-xs text-gray-500 border-t border-gray-100 bg-gray-50">
         <span aria-live="polite" aria-atomic="true">
@@ -296,6 +306,20 @@ export function UserDirectoryFilterBarEnhanced({
           </span>
         </span>
       </div>
+
+      {/* Filter Presets Menu */}
+      {showPresets && presetsLoaded && (
+        <FilterPresetsMenu
+          presets={getAllPresets()}
+          isOpen={presetsOpen}
+          onOpenChange={setPresetsOpen}
+          onLoadPreset={handleLoadPreset}
+          onCreatePreset={handleCreatePreset}
+          onDeletePreset={deletePreset}
+          onTogglePin={togglePin}
+          currentFilters={filters}
+        />
+      )}
     </div>
   )
 }
