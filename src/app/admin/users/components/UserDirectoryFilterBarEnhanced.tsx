@@ -72,9 +72,17 @@ export function UserDirectoryFilterBarEnhanced({
   multiSelect = true,
   showExport = true
 }: UserDirectoryFilterBarEnhancedProps) {
+  const [suggestionsOpen, setSuggestionsOpen] = useState(false)
+
+  const { suggestions, isLoading } = useSearchSuggestions(
+    allUsers,
+    filters.search,
+    5
+  )
+
   const hasActiveFilters = !!(
-    filters.search || 
-    (filters.roles?.length ?? 0) > 0 || 
+    filters.search ||
+    (filters.roles?.length ?? 0) > 0 ||
     (filters.statuses?.length ?? 0) > 0
   )
 
@@ -83,6 +91,12 @@ export function UserDirectoryFilterBarEnhanced({
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     onFiltersChange({ ...filters, search: value })
+    setSuggestionsOpen(!!value)
+  }, [filters, onFiltersChange])
+
+  const handleSuggestionSelect = useCallback((suggestion: any) => {
+    onFiltersChange({ ...filters, search: suggestion.text })
+    setSuggestionsOpen(false)
   }, [filters, onFiltersChange])
 
   const handleSelectAllChange = useCallback((checked: boolean) => {
