@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { VariableSizeList as List } from 'react-window'
 
 export interface VirtualScrollConfig {
@@ -111,6 +111,3 @@ export function VirtualList<T>({
     </List>
   )
 }
-
-// Import React for JSX
-import React from 'react'
