@@ -157,10 +157,10 @@ export function AISearchBar({
         <div className="mb-2 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-900">
           <p className="font-semibold mb-2">Natural Language Filter Examples:</p>
           <ul className="list-disc list-inside space-y-1 ml-2">
-            <li><code className="bg-blue-100 px-1 rounded">"active admins"</code> - Find active administrators</li>
-            <li><code className="bg-blue-100 px-1 rounded">"inactive team members"</code> - Find inactive team members</li>
-            <li><code className="bg-blue-100 px-1 rounded">"john in sales"</code> - Find John in sales department</li>
-            <li><code className="bg-blue-100 px-1 rounded">"marketing staff"</code> - Find staff in marketing</li>
+            <li><code className="bg-blue-100 px-1 rounded">&quot;active admins&quot;</code> - Find active administrators</li>
+            <li><code className="bg-blue-100 px-1 rounded">&quot;inactive team members&quot;</code> - Find inactive team members</li>
+            <li><code className="bg-blue-100 px-1 rounded">&quot;john in sales&quot;</code> - Find John in sales department</li>
+            <li><code className="bg-blue-100 px-1 rounded">&quot;marketing staff&quot;</code> - Find staff in marketing</li>
           </ul>
         </div>
       )}
@@ -265,9 +265,9 @@ export function AISearchBar({
             <div className="px-4 py-4 text-sm text-gray-500 text-center">
               <p className="font-medium mb-2">Try natural language queries:</p>
               <ul className="space-y-1 text-xs">
-                <li>"active admins"</li>
-                <li>"inactive team members"</li>
-                <li>"john in sales"</li>
+                <li>&quot;active admins&quot;</li>
+                <li>&quot;inactive team members&quot;</li>
+                <li>&quot;john in sales&quot;</li>
               </ul>
             </div>
           )}
