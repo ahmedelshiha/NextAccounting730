@@ -44,7 +44,8 @@ export function MobileFilterPills({
     }> = []
 
     // Add role pills
-    (filters.roles || []).forEach(role => {
+    const roles = Array.isArray(filters.roles) ? filters.roles : []
+    roles.forEach(role => {
       const option = roleOptions.find(o => o.value === role)
       if (option) {
         items.push({
@@ -57,7 +58,8 @@ export function MobileFilterPills({
     })
 
     // Add status pills
-    (filters.statuses || []).forEach(status => {
+    const statuses = Array.isArray(filters.statuses) ? filters.statuses : []
+    statuses.forEach(status => {
       const option = statusOptions.find(o => o.value === status)
       if (option) {
         items.push({

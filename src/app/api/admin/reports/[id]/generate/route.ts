@@ -32,6 +32,12 @@ export const POST = withTenantContext(async (request: NextRequest, { params }: {
       return NextResponse.json({ error: 'Invalid export format. Supported: pdf, xlsx, csv, json' }, { status: 400 })
     }
 
+    // Cast report to ensure sections are properly typed
+    const typedReport = {
+      ...report,
+      sections: Array.isArray(report.sections) ? report.sections : []
+    }
+
     const execution = await prisma.reportExecution.create({
       data: {
         id: crypto.randomUUID(),
@@ -48,13 +54,11 @@ export const POST = withTenantContext(async (request: NextRequest, { params }: {
           id: true,
           name: true,
           email: true,
-          phone: true,
           role: true,
           availabilityStatus: true,
           department: true,
           position: true,
-          createdAt: true,
-          lastLoginAt: true
+          createdAt: true
         }
       })
 
@@ -63,11 +67,13 @@ export const POST = withTenantContext(async (request: NextRequest, { params }: {
         data = applyFilters(data, filters)
       }
 
+      // Cast sections as array to avoid JsonValue type issues
+      const sections = Array.isArray(typedReport.sections) ? (typedReport.sections as any[]) : []
       const reportData = {
-        columns: report.sections[0]?.columns || [],
+        columns: sections[0]?.columns || [],
         rows: data,
         rowCount: data.length,
-        summary: calculateSummaryStats(data, report.sections[0]?.calculations || [])
+        summary: calculateSummaryStats(data, sections[0]?.calculations || [])
       }
 
       let generatedContent = ''
@@ -76,17 +82,17 @@ export const POST = withTenantContext(async (request: NextRequest, { params }: {
 
       switch (format) {
         case 'pdf':
-          generatedContent = generateReportHTML(report, reportData)
+          generatedContent = generateReportHTML(typedReport, reportData)
           contentType = 'text/html'
           filename += '.html'
           break
         case 'xlsx':
-          generatedContent = generateExcelReport(report, reportData)
+          generatedContent = generateExcelReport(typedReport, reportData)
           contentType = 'text/tab-separated-values'
           filename += '.xlsx'
           break
         case 'csv':
-          generatedContent = generateCSVReport(report, reportData)
+          generatedContent = generateCSVReport(typedReport, reportData)
           contentType = 'text/csv'
           filename += '.csv'
           break
