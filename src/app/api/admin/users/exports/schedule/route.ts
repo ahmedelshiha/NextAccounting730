@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { withTenantContext } from '@/lib/api-wrapper'
 import { tenantContext } from '@/lib/tenant-context'
-import { hasPermission } from '@/lib/permissions'
+import { hasPermission, PERMISSIONS } from '@/lib/permissions'
 import { rateLimit } from '@/lib/rate-limit'
 
 export const GET = withTenantContext(async (request: NextRequest) => {
@@ -14,7 +15,7 @@ export const GET = withTenantContext(async (request: NextRequest) => {
     }
 
     const context = tenantContext.getContext()
-    const hasAccess = await hasPermission(context.userId, 'admin:users:export')
+    const hasAccess = await hasPermission(context.userId, PERMISSIONS.USERS_EXPORT)
     if (!hasAccess) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
