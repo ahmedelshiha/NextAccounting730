@@ -15,6 +15,7 @@ import { useOrgSettings } from '@/components/providers/SettingsProvider'
 import { useSidebarKeyboardShortcuts } from '@/hooks/admin/useSidebarKeyboardShortcuts'
 import { useSidebarState, useSidebarActions } from '@/stores/admin/layout.store.selectors'
 import SidebarLiveRegion from '@/components/admin/layout/SidebarLiveRegion'
+import { type Locale } from '@/lib/i18n'
 
 interface ClientLayoutProps {
   children: React.ReactNode
@@ -24,6 +25,7 @@ interface ClientLayoutProps {
   contactEmail?: string
   contactPhone?: string
   legalLinks?: Record<string, string>
+  locale?: Locale
 }
 
 // extend Window to store a fetch flag without using `any`
