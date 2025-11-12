@@ -315,7 +315,7 @@ export async function publishEvent(
       ...payload,
     });
     
-    await redis.publish(JOB_CHANNEL, event);
+    await (redis as any).publish(JOB_CHANNEL, event);
   } catch (error) {
     logger.error("Failed to publish verification event", { eventType, error });
   }
