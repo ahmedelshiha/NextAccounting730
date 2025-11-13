@@ -147,7 +147,7 @@ describe('Compliance Rules Engine', () => {
 
   describe('Calculate Obligations', () => {
     it('should calculate all applicable obligations for UAE company', () => {
-      const entity = mockEntity({ country: 'AE', type: 'company' });
+      const entity = mockEntity({ country: 'AE', metadata: { entityType: 'company' } });
       const obligations = calculateObligations(entity, { annualTurnover: 500000 });
 
       const obligationTypes = obligations.map((o) => o.type);
@@ -158,7 +158,7 @@ describe('Compliance Rules Engine', () => {
     });
 
     it('should calculate all applicable obligations for KSA company', () => {
-      const entity = mockEntity({ country: 'SA', type: 'company' });
+      const entity = mockEntity({ country: 'SA', metadata: { entityType: 'company' } });
       const obligations = calculateObligations(entity, { annualTurnover: 2000000 });
 
       const obligationTypes = obligations.map((o) => o.type);
@@ -169,7 +169,7 @@ describe('Compliance Rules Engine', () => {
     });
 
     it('should calculate all applicable obligations for Egypt company', () => {
-      const entity = mockEntity({ country: 'EG', type: 'company' });
+      const entity = mockEntity({ country: 'EG', metadata: { entityType: 'company' } });
       const obligations = calculateObligations(entity, { annualTurnover: 600000 });
 
       const obligationTypes = obligations.map((o) => o.type);
