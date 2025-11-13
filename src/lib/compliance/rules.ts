@@ -176,7 +176,8 @@ export function calculateObligations(
 ): ComplianceObligation[] {
   const obligations: ComplianceObligation[] = [];
   const turnover = params?.annualTurnover || 0;
-  const countryData = getCountry(entity.country);
+  const country = entity.country as CountryCode;
+  const countryData = getCountry(country);
 
   if (!countryData) {
     return obligations;
